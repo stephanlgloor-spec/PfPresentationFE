@@ -63,26 +63,28 @@ export class LandingPage {
    * It is an asynchronous method that returns a Promise, allowing for proper handling of the verification process.
    */
   async expectPageLoaded() {
+    // first menu item is visible 
     await this.page.locator('[data-testid="desktop-navbar-item"]').first().waitFor({ state: 'visible' });
-    const amount = await this.page.locator('[data-testid="desktop-navbar-item"]').count();
-    await expect(amount).toBeGreaterThan(0);
+    // check for all menu items 
+    const count = await this.page.locator('[data-testid="desktop-navbar-item"]').count();
+    await expect(count).toBeGreaterThan(0);
     const widgetTitles = await this.page.locator('[data-testid="widget-title"]').count();
     expect(widgetTitles).toBeGreaterThan(0);
-    await this.platformSwitchLinks.expectPlatformLinksVisible();
-    await this.nav.expectMenuVisible();
-    await this.paymentWidget.expectVisible();
-    await this.ebillWidget.expectVisible();
-    await this.analyticsWidget.expectVisible();
-    await this.assetsWidget.expectVisible();
-    await this.creditCardWidget.expectVisible();
-    await this.creditCardWidget1.expectVisible();
-    await this.creditCardWidgetBusiness.expectVisible();
-    await this.movementOverview.expectVisible();
-    await this.fileUploadWidget.expectVisible(); 
-    await this.searchWidget.expectVisible();
-    await this.enquiryWidget.expectVisible();
-    await this.editPaymentWidget.expectVisible();
-    await this.epoOverview.expectVisible();
+    await this.platformSwitchLinks.expectPlatformLinksAvailable();
+    await this.nav.expectMenuAvailable();
+    await this.paymentWidget.expectAvailable();
+    await this.ebillWidget.expectAvailable();
+    await this.analyticsWidget.expectAvailable();
+    await this.assetsWidget.expectAvailable();
+    await this.creditCardWidget.expectAvailable();
+    await this.creditCardWidget1.expectAvailable();
+    await this.creditCardWidgetBusiness.expectAvailable();
+    await this.movementOverview.expectAvailable();
+    await this.fileUploadWidget.expectAvailable(); 
+    await this.searchWidget.expectAvailable();
+    await this.enquiryWidget.expectAvailable();
+    await this.editPaymentWidget.expectAvailable();
+    await this.epoOverview.expectAvailable();
 
   }
 }
@@ -92,12 +94,12 @@ export class LandingPage {
  */
 export enum MenuItem {
   Home = "Home",
-  Assets = "Vermögen",
-  Payments = "Zahlungen",
-  Epo = "EZAG",
-  Documents = "Dokumente",
-  Insurances = "Versicherungen",
-  Offers = "Produkte",
+  Assets = "Assets",
+  Payments = "Payments",
+  Epo = "Epo",
+  Documents = "Documents",
+  Insurances = "Insurances",
+  Offers = "Offers",
 }
 
 /**
@@ -124,17 +126,16 @@ export class NavigationBar {
 
   /**
    * Clicks on a menu item in the navigation bar.
-   * TODO do it by it's data-cy attribute instead of text, because the text is translated and can change
    * @param name the menu item to click
    */
   async clickMenuItem(name: MenuItem) {
-    await this.menuItems.filter({ hasText: name.toString() }).first().click();
+    this.page.locator('[data-testid="' + name.toString() + '"]').click();
   }
 
   /**
-   * Verifies that the navigation bar menu is visible by checking that there is at least one menu item present.
+   * Verifies that the navigation bar menu is available by checking that there is at least one menu item present.
    */
-  async expectMenuVisible() {
+  async expectMenuAvailable() {
     const count = await this.menuItems.count();
     expect(count).toBeGreaterThan(0);
   }
@@ -168,9 +169,9 @@ export class PlatformswitchLinks {
   }
 
   /**
-   * Verifies that the platform switch links are visible by checking that there is at least one link for each platform present on the landing page.
+   * Verifies that the platform switch links are available by checking that there is at least one link for each platform present on the landing page.
    */
-  async expectPlatformLinksVisible() {
+  async expectPlatformLinksAvailable() {
     const countEfinance = await this.platformEfinanceLink.count();
     expect(countEfinance).toBeGreaterThan(0);
     const countMepo = await this.platformMepoLink.count();
