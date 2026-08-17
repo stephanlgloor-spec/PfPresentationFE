@@ -79,12 +79,24 @@ export const WIDGET_TITLES: Record<string, Record<Language, string>> = {
     [Language.IT]: 'Inchieste',
     [Language.EN]: 'Enquiries',
   },
-//   QUICK_LINKS: {
-//     [Language.DE]: 'Quicklinks',
-//     [Language.FR]: 'Liens rapides',
-//     [Language.IT]: 'Collegamenti rapidi',
-//     [Language.EN]: 'Quick Links',
-//   },
+  QUICK_LINKS_EDIT_PAYMENT: {
+    [Language.DE]: 'Zahlungen',
+    [Language.FR]: 'Liens rapides',
+    [Language.IT]: 'Collegamenti rapidi',
+    [Language.EN]: 'Quick Links',
+  },
+  QUICK_LINKS_SEARCH: {
+    [Language.DE]: 'Zahlungsauftrag EZAG',
+    [Language.FR]: 'Liens rapides',
+    [Language.IT]: 'Collegamenti rapidi',
+    [Language.EN]: 'Quick Links',
+  },
+  QUICK_LINKS_ENQUIRY: {
+    [Language.DE]: 'Übersicht',
+    [Language.FR]: 'Liens rapides',
+    [Language.IT]: 'Collegamenti rapidi',
+    [Language.EN]: 'Quick Links',
+  },
 };
 
 /**

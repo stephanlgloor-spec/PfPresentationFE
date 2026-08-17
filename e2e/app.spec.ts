@@ -14,7 +14,7 @@ const __filename = fileURLToPath(import.meta.url);
 export const __dirname = dirname(__filename);
 
 /**
- * This are designed to be language-neutral, ensuring that they work regardless of the language settings of the application.
+ * This test is designed to be language-neutral, ensuring that they work regardless of the language settings of the application.
  */
 test('Alles In Allem - Landing Page - language neutral - two different viewports', async ({ page }) => {
   for (const viewport of [{ width: 1960, height: 1440 }/* , { width: 402, height: 874 } */]) {    // laptop, mobile (iPhone 17)
@@ -28,6 +28,9 @@ test('Alles In Allem - Landing Page - language neutral - two different viewports
   }
 });
 
+/**
+ * Test with text in specific language for language setting German
+ */
 test('Check all texts in German', async ({ page }) => {
   // sufficient to check the visibility
   await page.setViewportSize({ width: 1960, height: 1440 });
@@ -46,6 +49,7 @@ test('Check all texts in German', async ({ page }) => {
   await landingPage.movementOverview.verifyTitle(Language.DE);
   await landingPage.fileUploadWidget.verifyTitle(Language.DE);
   await landingPage.epoOverview.verifyTitle(Language.DE);
+  // TODO quick links widget Edit, Search and Enquiry
   
   // Verify widget-specific content in German
   await landingPage.paymentWidget.verifyContent(Language.DE);
@@ -58,10 +62,13 @@ test('Check all texts in German', async ({ page }) => {
   await landingPage.movementOverview.verifyContent(Language.DE);
   await landingPage.fileUploadWidget.verifyContent(Language.DE);
   await landingPage.epoOverview.verifyContent(Language.DE);
+  // TODO quick links widget Edit, Search and Enquiry
 });
 
-test.skip('Check all texts in French', async ({ page }) => {
-  // navigate to the page
+test('Check all texts in French', async ({ page }) => {
+  // navigate to the page post finance Francais
+  await page.goto('/fr');
+  // navigate to the page for the demo
   await page.goto('/ap/ga/ob/html/finance/home');
   const landingPage = new LandingPage(page);
   
@@ -76,6 +83,7 @@ test.skip('Check all texts in French', async ({ page }) => {
   await landingPage.movementOverview.verifyTitle(Language.FR);
   await landingPage.fileUploadWidget.verifyTitle(Language.FR);
   await landingPage.epoOverview.verifyTitle(Language.FR);
+  // TODO quick links widget Edit, Search and Enquiry
   
   // Verify widget-specific content in French
   await landingPage.paymentWidget.verifyContent(Language.FR);
@@ -88,6 +96,7 @@ test.skip('Check all texts in French', async ({ page }) => {
   await landingPage.movementOverview.verifyContent(Language.FR);
   await landingPage.fileUploadWidget.verifyContent(Language.FR);
   await landingPage.epoOverview.verifyContent(Language.FR);
+  // TODO quick links widget Edit, Search and Enquiry
 });
 
 /**
@@ -110,6 +119,7 @@ test('Check all outgoing links', async ({ page }) => {
   // check E-Finance Portal link is working properly
   await page.locator('[data-testid="PlatformEfinance"]').click();
   // FIXME: await landingPage.platformSwitchLinks.clickPlatformMepoLink();
+
   // await landingPage.nav.expectMenuVisible();  // check if the page is loaded properly by checking if the menu items are visible
  // await new MepoPage(page).expectMenuItemsVisible();  // check if the page is loaded properly by checking if the menu items are visible
    // check E-Finance Portal link is working properly

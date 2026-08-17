@@ -1,13 +1,17 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 import { Language, WIDGET_TITLES } from './types';
 
-export class WidgetBase {
-    readonly page: Page;
-    protected helpButton: Locator = undefined as unknown as Locator;  // The Locator object representing the help button within the widget, initialized as undefined and cast to Locator type.
-    readonly title: Locator;  //  The Locator object representing the title of the payment widget, filtered to match specific text related to payments or standing orders.
+/**
+ * Base class representing the widget with help button title and content.
+ * The content is queried by the subclass which is derived from this base class and one of the widgets on the landing page.
+ */
+class WidgetBase {
+    readonly page: Page;  // The Playwright Page object representing the current page.
     protected widget: Locator;
+    readonly title: Locator;  //  The Locator object representing the title of the payment widget, filtered to match specific text related to payments or standing orders.
     protected titleKey: string; // Reference to the widget title translation key
-
+    protected helpButton: Locator = undefined as unknown as Locator;  // The locator object representing the help button within the widget, initialized as undefined and cast to Locator type.
+   
     constructor(page: Page, cv: string, titleKey: string, helpButton: boolean = false) {
         this.page = page;
         // locate the widget title by data-cy attribute, which is unique for each widget, and filter by the provided cv (component version) string
@@ -40,8 +44,10 @@ export class WidgetBase {
     }
 }
 /**
- * Represents the payment widget on the landing page, providing access to various elements related to payments, such as buttons and input fields for IBAN, recipient name, and payment information.
- * "Zahlung / Dauerauftrag erfassen" is the German term for "record payment", which refers to the process of entering payment details into the payment widget.
+ * Represents the payment widget on the landing page, providing access to various elements related to payments, 
+ * such as buttons and input fields for IBAN, recipient name, and payment information.
+ * "Zahlung / Dauerauftrag erfassen" is the German term for "record payment", 
+ * which refers to the process of entering payment details into the payment widget.
  */
 export class PaymentWidget extends WidgetBase {
     readonly page: Page;  // The Playwright Page object representing the current page.
@@ -62,9 +68,8 @@ export class PaymentWidget extends WidgetBase {
     }
 
     /**
-     *  Verifies that the payment widget is visible on the landing page by checking for the presence of the title, transfer button, and QR invoice button elements.
-     *  This method uses the Playwright expect function to assert that these elements are visible on the page.
-     *  It is an asynchronous method that returns a Promise, allowing for proper handling of the verification process.
+     *  Verifies that the payment widget is visible on the landing page by checking for the visibility of the title, 
+     *  transfer button, and QR invoice button elements.
      */
     async expectVisible() {
         await expect(this.title).toBeVisible();
@@ -73,9 +78,8 @@ export class PaymentWidget extends WidgetBase {
     }
 
     /**
-     *  Verifies that the payment widget is available on the landing page by checking for the presence of the title, transfer button, and QR invoice button elements.
-     *  This method uses the Playwright expect function to assert that these elements are available on the page.
-     *  It is an asynchronous method that returns a Promise, allowing for proper handling of the verification process.
+     *  Verifies that the payment widget is available on the landing page by checking for the presence of the title, 
+     *  transfer button, and QR invoice button elements in the DOM.
      */
     async expectAvailable() {
         await expect(this.title).toBeAttached();
@@ -93,7 +97,7 @@ export class PaymentWidget extends WidgetBase {
 /**
  * Represents the eBill widget on the landing page, providing access to various elements related to eBills, such as the title, help button, list of eBills, and link to the eBill portal.
  * This class allows for interaction with the eBill widget and verification of its visibility on the landing this.widget.
- * "eBill" is a digital billing service that allows users to receive and manage their bills electronically, providing a convenient and secure way to handle billing information.
+ * "eBill" is a digital billing service.
  */
 export class EBillWidget extends WidgetBase {
     readonly list: Locator;  // The Locator object representing the list of eBills.
@@ -106,7 +110,7 @@ export class EBillWidget extends WidgetBase {
     }
 
     /**
-     * Verifies that the eBill widget is visible on the landing page by checking for the presence of the title and list elements.
+     * Verifies that the eBill widget is visible on the landing page by checking for the visibility of the title and list elements.
      */
     async expectVisible() {
         await expect(this.title).toBeVisible();
@@ -114,7 +118,7 @@ export class EBillWidget extends WidgetBase {
     }
     
     /**
-     * Verifies that the eBill widget is attached on the landing page by checking for the presence of the title and list elements.
+     * Verifies that the eBill widget is available on the landing page by checking for the presence of the title and list elements in the DOM.
      */
     async expectAvailable() {
         await expect(this.title).toBeAttached();
@@ -129,9 +133,10 @@ export class EBillWidget extends WidgetBase {
 }
 
 /**
- *  Represents the analytics widget on the landing page, providing access to various elements related to analytics, such as the title, settings button, help button, chart, and link to the analytics overview.
+ *  Represents the analytics widget on the landing page, providing access to various elements related to analytics, 
+ *  such as the title, settings button, help button, chart, and link to the analytics overview.
  *  This class allows for interaction with the analytics widget and verification of its visibility on the landing page.
- *  "Analysen" is the German term for "analytics", which refers to the systematic computational analysis of data or statistics, often used to gain insights and make informed decisions.
+ *  "Analysen" is the German term for "analytics"
  */
 export class AnalyticsWidget extends WidgetBase {
     readonly settingsButton: Locator;
@@ -146,7 +151,7 @@ export class AnalyticsWidget extends WidgetBase {
     }
 
     /**
-     * Verifies that the analytics widget is visible on the landing page by checking for the presence of 
+     * Verifies that the analytics widget is visible on the landing page by checking for the visibility of 
      * the title and chart elements.
      */
     async expectVisible() {
@@ -155,7 +160,7 @@ export class AnalyticsWidget extends WidgetBase {
     }
     /**
      * Verifies that the analytics widget is attached on the landing page by checking for the presence of
-     *  the title and chart elements.
+     *  the title and chart elements in the DOM.
      */
     async expectAvailable() {
         await expect(this.title).toBeAttached();
@@ -187,7 +192,7 @@ export class AssetsWidget extends WidgetBase {
     }
 
     /**
-     * Verifies that the assets widget is visible on the landing page by checking for the presence of the title 
+     * Verifies that the assets widget is visible on the landing page by checking for the visibility of the title 
      * and rows elements.
      */
     async expectVisible() {
@@ -196,8 +201,7 @@ export class AssetsWidget extends WidgetBase {
         await expect(count).toBeGreaterThan(0);
     }
     /**
-     * Verifies that the assets widget is attached on the landing page by checking for the presence of
-     *  the title and row elements.
+     * Verifies that the assets widget is attached on the landing page by checking for the presence of the title and row elements in the DOM.
      */
     async expectAvailable() {
         await expect(this.title).toBeAttached();
@@ -224,8 +228,7 @@ export class AssetsWidget extends WidgetBase {
 
         for (const label of expectedLabels) {
             // Use getByText for more reliable text matching across languages
-            const labelLocator = this.widget.getByText(
-                label/* new RegExp(`^${label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`) */);
+            const labelLocator = this.widget.getByText(label);
             await expect(labelLocator).toBeVisible();
         }
     }
@@ -250,7 +253,7 @@ class CreditCardWidget extends WidgetBase {
     }
 
     /**
-     * Verifies that the credit card widget is visible on the landing page by checking for the presence of the title and amount elements.
+     * Verifies that the credit card widget is visible on the landing page by checking for the visibility of the title and amount elements.
      */
     async expectVisible() {
         await expect(this.title).toBeVisible();
@@ -259,7 +262,7 @@ class CreditCardWidget extends WidgetBase {
     }
      /**
      * Verifies that the credit card widget is attached on the landing page by checking 
-     * for the presence of the title and amount elements.
+     * for the presence of the title and amount elements in the DOM.
      */
     async expectAvailable() {
         await expect(this.title).toBeAttached();
@@ -275,22 +278,29 @@ class CreditCardWidget extends WidgetBase {
     }
 }
 
-
+/**
+ * Business Credit Card
+ */
 export class CreditCardWidgetBusiness extends CreditCardWidget {
-    // check for data-cy="credit-card-0000000000000020_22_0"
     constructor(page: Page) {
         super(page, "credit-card-0000000000000020_22_0");
+        // TODO check for Business title
     }
 }
 
+/**
+ * First Credit Card on the page
+ */
 export class CreditCardWidget1 extends CreditCardWidget {
-    // check for data-cy="credit-card-0000000000000000_22_0"
     constructor(page: Page) {
         super(page, "credit-card-0000000000000000_22_0");
     }
 }
+
+/**
+ * sEcond Credit Card on the page
+ */
 export class CreditCardWidget2 extends CreditCardWidget {
-    // check for data-cy="credit-card-0000000000000010_22_0"
     constructor(page: Page) {
         super(page, "credit-card-0000000000000010_22_0");
     }
@@ -313,22 +323,26 @@ class QuickLinksWidget extends WidgetBase {
         this.linkByText = (text: string) => this.container.locator('a', { hasText: text });
     }
 
-
     /**
      *  Verifies that the quick links widget is visible on the landing page by checking for the presence of the container element.
-     *  This method uses the Playwright expect function to assert that the container element is visible on the page.
-     *  It is an asynchronous method that returns a Promise, allowing for proper handling of the verification process.
      */
     async expectVisible() {
         await expect(this.container).toBeVisible();
     }
+
     /**
      *  Verifies that the quick links widget is attached on the landing page by checking for the presence of the container element.
-     *  This method uses the Playwright expect function to assert that the container element is visible on the page.
-     *  It is an asynchronous method that returns a Promise, allowing for proper handling of the verification process.
      */
     async expectAvailable() {
         await expect(this.container).toBeAttached();
+    }
+
+    /**
+     * Check for if link is visible in the quick links widget by checking for the presence of a link with the specified text.
+     * @param text the text of the quick link 
+     */
+    async expectContainsLinkVisible(text: string) {
+        await expect(this.linkByText(text)).toBeVisible();
     }
 
     /**
@@ -336,7 +350,7 @@ class QuickLinksWidget extends WidgetBase {
      * @param text the text of the quick link 
      */
     async expectContainsLink(text: string) {
-        await expect(this.linkByText(text)).toBeVisible();
+        await expect(this.linkByText(text)).toBeAttached();
     }
 
     /**
@@ -346,33 +360,35 @@ class QuickLinksWidget extends WidgetBase {
         // Override in child classes if needed
     }
 }
+
 export class EditPaymentWidget extends QuickLinksWidget {
     constructor(page: Page) {
         super(page, "editPayment", "EDIT_PAYMENT");
     }
+    // TODO check All Links "Zahlungen", "Kontoüberträge"
 }
-
 export class SearchWidget extends QuickLinksWidget {
     constructor(page: Page) {
         super(page, "search", "SEARCH");
     }
+    // TODO check All Links "Zahlungsauftrag EZAG", "Einzelauftrag EZAG"
 }
 export class EnquiryWidget extends QuickLinksWidget {
     constructor(page: Page) {
         super(page, "enquiry", "ENQUIRY");
     }
+    // TODO check All Links "Übersicht", "Einzelsuche", "Sammelsuche"
 }
 
 
 /**
- * Represents the movement overview widget on the landing page, providing access to various elements related to movements, such as the title, settings button, help button, balance table, and links to all movements and all orders.
+ * Represents the movement overview widget on the landing page, providing access to various elements related to movements, 
+ * such as the title, settings button, help button, balance table, and links to all movements and all orders.
  * This class allows for interaction with the movement overview widget and verification of its visibility on the landing this.widget.
  * "Bewegungsübersicht"
  */
 export class MovementOverviewWidget extends WidgetBase {
-    // readonly title: Locator;
     readonly settingsButton: Locator;
-    readonly helpButton: Locator;
     readonly balanceTable: Locator;
     readonly allMovementsLink: Locator;
     readonly allOrdersLink: Locator;
@@ -380,16 +396,14 @@ export class MovementOverviewWidget extends WidgetBase {
     constructor(page: Page) {
         super(page, "movements", "MOVEMENTS");
         this.settingsButton = this.widget.locator('[data-testid="widget-settings-button"]').nth(1);
-        this.helpButton = this.widget.locator('[data-testid="widget-help-button"]').nth(3);
+        this.helpButton = this.widget.locator('[data-testid="widget-help-button"]').nth(3); // TODO why 3rd
         this.balanceTable = this.widget.locator('[data-testid="lastMovements-table"]');
         this.allMovementsLink = this.widget.locator('[data-testid="interactiveLink-AllMovements"]');
         this.allOrdersLink = this.widget.locator('[data-testid="interactiveLink-AllOrders"]');
     }
 
     /**
-     *  Verifies that the movement overview widget is visible on the landing page by checking for the presence of the title and balance table elements.
-     *  This method uses the Playwright expect function to assert that these elements are visible on the page.
-     *  It is an asynchronous method that returns a Promise, allowing for proper handling of the verification process.
+     *  Verifies that the movement overview widget is visible on the landing page by checking for the visibility of the title and balance table elements.
      */
     async expectVisible() {
         await expect(this.title).toBeVisible();
@@ -398,9 +412,7 @@ export class MovementOverviewWidget extends WidgetBase {
 
      /**
      *  Verifies that the movement overview widget is attached on the landing page by checking for the 
-     *  presence of the title and balance table elements.
-     *  This method uses the Playwright expect function to assert that these elements are visible on the page.
-     *  It is an asynchronous method that returns a Promise, allowing for proper handling of the verification process.
+     *  presence of the title and balance table elements in the DOM.
      */
     async expectAvailable() {
         await expect(this.title).toBeAttached();
@@ -415,7 +427,7 @@ export class MovementOverviewWidget extends WidgetBase {
     }
 }
 /**
- * Overview EZAG widget on the landing page, providing access to various elements related to EZAG (Elektronische Zahlungsaufträge), such as the title and balance table.
+ * Overview EZAG widget on the landing page, providing access to various elements related to EZAG (Elektronische Zahlungsaufträge).
  * "Übersicht EZAG"
  */
 export class EpoOverview extends WidgetBase {
@@ -425,18 +437,14 @@ export class EpoOverview extends WidgetBase {
         this.page = page;
     }
     /**
-     *  Verifies that the movement overview widget is visible on the landing page by checking for the presence of the title and balance table elements.
-     *  This method uses the Playwright expect function to assert that these elements are visible on the page.
-     *  It is an asynchronous method that returns a Promise, allowing for proper handling of the verification process.
+     *  Verifies that the movement overview widget is visible on the landing page by checking for the visibility of the title.
      */
     async expectVisible() {
         await expect(this.title).toBeVisible();
     }
 
     /**
-     *  Verifies that the movement overview widget is attached on the landing page by checking for the presence of the title and balance table elements.
-     *  This method uses the Playwright expect function to assert that these elements are visible on the page.
-     *  It is an asynchronous method that returns a Promise, allowing for proper handling of the verification process.
+     *  Verifies that the movement overview widget is attached on the landing page by checking for the presence of the title in the DOM.
      */
     async expectAvailable() {
         await expect(this.title).toBeAttached();
@@ -463,11 +471,17 @@ export class FileUploadWidget extends WidgetBase {
         this.uploader = this.widget.locator('[data-testid="fileUploader-content"]');
     }
 
+    /**
+     *  Verifies that the FileUploadWidget widget is visible on the landing page by checking for the visibility of the title and uploader button.
+     */
     async expectVisible() {
         await expect(this.title).toBeVisible();
         await expect(this.uploader).toBeVisible();
     }
 
+    /**
+     *  Verifies that the FileUploadWidget widget is attached on the landing page by checking for the presence of the title and uploader button elements in the DOM.
+     */
     async expectAvailable() {
         await expect(this.title).toBeAttached();
         await expect(this.uploader).toBeAttached();
