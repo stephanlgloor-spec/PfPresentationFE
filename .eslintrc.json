@@ -1,0 +1,22 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": ["./tsconfig.app.json", "./tsconfig.spec.json"],
+    "sourceType": "module",
+    "ecmaVersion": 2024
+  },
+  "env": {
+    "browser": true,
+    "es2024": true
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "rules": {
+    "no-console": "warn",
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "linelength": ["warn", { "code": 120 }],
+    "no-duplicate-imports": "error"
+  }
+}

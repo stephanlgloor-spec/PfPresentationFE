@@ -1,0 +1,18 @@
+{
+  "/api": {
+    "target": "https://ckan-prod-domain.com",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": ""
+    }
+  },
+  "/ktnzh": {
+    "target": "https://data.stadt-zuerich.ch",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/ktnzh": ""
+    }
+  }
+}
