@@ -7,7 +7,7 @@ export default defineConfig({
   timeout: 30000,
   use: {
     baseURL: 'https://www.postfinance.ch/',
-    headless: false,
+    headless: true,
     viewport: { width: 1960, height: 1440 },
     browserName: 'chromium',
     actionTimeout: 10000,
