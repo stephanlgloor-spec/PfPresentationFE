@@ -17,7 +17,9 @@ export const __dirname = dirname(__filename);
  * This test is designed to be language-neutral, ensuring that they work regardless of the language settings of the application.
  */
 test('Alles In Allem - Landing Page - language neutral - two different viewports', async ({ page }) => {
-  for (const viewport of [{ width: 1960, height: 1440 }/* , { width: 402, height: 874 } */]) {    // laptop, mobile (iPhone 17)
+  // FIXME  two view ports visible
+  for (const viewport of [{ width: 1960, height: 1440 }/* , { width: 402, height: 874 } */]) {    
+    // laptop, mobile (iPhone 17)
     // change viewport
     await page.setViewportSize(viewport);
     // navigate to the landing page
@@ -125,4 +127,18 @@ test('Check all outgoing links', async ({ page }) => {
    // check E-Finance Portal link is working properly
   await page.waitForURL(/\/finance\/home/);  // wait for the new page to open
   // FIXME: await landingPage.nav.expectMenuVisible();  // check if the page is loaded properly by checking if the menu items are visible
+});
+
+
+/**
+ * Check all possible movements and if correct displays the last movements
+ */
+test('check all movements ', async ({ page }) => {
+});
+
+
+/**
+ * activate get multi-banking for assets
+ */
+test('activate multi-banking', async ({ page }) => {
 });

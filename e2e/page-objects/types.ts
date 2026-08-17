@@ -112,7 +112,7 @@ export const ASSET_TABLE_LABELS: Record<string, Record<Language, string>> = {
   },
   SAVINGS_ACCOUNTS: {
     [Language.DE]: 'Sparkonten',
-    [Language.FR]: "Comptes d'épargne",
+    [Language.FR]: "Comptes d’épargne",
     [Language.IT]: 'Sparkonten',
     [Language.EN]: 'Sparkonten',
   },
