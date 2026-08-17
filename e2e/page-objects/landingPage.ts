@@ -157,6 +157,16 @@ export class PlatformswitchLinks {
 
   }
 
+  public async clickPlatformEfinanceLink() {
+    await this.platformEfinanceLink.isVisible();
+    await this.platformEfinanceLink.click();
+  }
+
+  public async clickPlatformMepoLink() {
+    await this.platformMepoLink.isVisible();
+    await this.platformMepoLink.click();
+  }
+
   /**
    * Verifies that the platform switch links are visible by checking that there is at least one link for each platform present on the landing page.
    */

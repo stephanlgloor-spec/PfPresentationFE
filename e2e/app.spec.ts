@@ -1,13 +1,14 @@
 /**
  * This test suite contains end-to-end tests for the landing page of the application. It verifies that the landing page loads correctly and that all outgoing links are functional.
  */
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { LandingPage } from './page-objects/landingPage';
+import MepoPage from './page-objects/MepoPage';
 const __filename = fileURLToPath(import.meta.url);
 export const __dirname = dirname(__filename);
 
@@ -33,7 +34,20 @@ test('Check all outgoing links', async ({ page }) => {
   // check page is loaded properly and all content is visible
   await landingPage.expectPageLoaded();
   // check outgoing links are working properly
-  // only some of the links are tested ... because is demo mode and some links are not working properly
-
-
+  // only some of the links are tested ... because is demo mode and some links are not working properly  
+  // check Merchant Portal link is working properly
+  await page.locator('[data-testid="PlatformMepo"]').click();
+  //FIXME  await landingPage.platformSwitchLinks.clickPlatformEfinanceLink();
+  await page.waitForURL(/\/merchant-portal\/analytics/);  // wait for the new page to open
+ // FIXME await new MepoPage(page).expectMenuItemsVisible();  // check if the page is loaded properly by checking if the menu items are visible
+   
+ 
+  // check E-Finance Portal link is working properly
+  await page.locator('[data-testid="PlatformEfinance"]').click();
+  // FIXME: await landingPage.platformSwitchLinks.clickPlatformMepoLink();
+  // await landingPage.nav.expectMenuVisible();  // check if the page is loaded properly by checking if the menu items are visible
+ // await new MepoPage(page).expectMenuItemsVisible();  // check if the page is loaded properly by checking if the menu items are visible
+   // check E-Finance Portal link is working properly
+  await page.waitForURL(/\/finance\/home/);  // wait for the new page to open
+  // FIXME: await landingPage.nav.expectMenuVisible();  // check if the page is loaded properly by checking if the menu items are visible
 });

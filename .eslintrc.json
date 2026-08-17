@@ -14,9 +14,8 @@
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   "rules": {
     "no-console": "warn",
+    "max-len": ["warn", { "code": 120 }],
     "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "linelength": ["warn", { "code": 120 }],
-    "no-duplicate-imports": "error"
+    "@typescript-eslint/explicit-function-return-type": "off"
   }
 }
