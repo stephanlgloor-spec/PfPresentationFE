@@ -114,12 +114,12 @@ test('Check all outgoing links', async ({ page }) => {
   // check outgoing links are working properly
   // only some of the links are tested ... because is demo mode and some links are not working properly  
   // check Merchant Portal link is working properly
-  await page.locator('[data-testid="PlatformMepo"]').click();
+  await page.getByTestId("PlatformMepo").click();
   //FIXME  await landingPage.platformSwitchLinks.clickPlatformEfinanceLink();
   await page.waitForURL(/\/merchant-portal\/analytics/);  // wait for the new page to open
  // FIXME await new MepoPage(page).expectMenuItemsVisible();  // check if the page is loaded properly by checking if the menu items are visible 
   // check E-Finance Portal link is working properly
-  await page.locator('[data-testid="PlatformEfinance"]').click();
+  await page.getByTestId("PlatformEfinance").click();
   // FIXME: await landingPage.platformSwitchLinks.clickPlatformMepoLink();
 
   // await landingPage.nav.expectMenuVisible();  // check if the page is loaded properly by checking if the menu items are visible
@@ -134,6 +134,7 @@ test('Check all outgoing links', async ({ page }) => {
  * Check all possible movements and if correct displays the last movements
  */
 test('check all movements ', async ({ page }) => {
+  // TODO
 });
 
 
