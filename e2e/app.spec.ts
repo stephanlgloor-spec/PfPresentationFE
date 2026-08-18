@@ -1,7 +1,7 @@
 /**
  * This test suite contains end-to-end tests for the landing page of the application. It verifies that the landing page loads correctly and that all outgoing links are functional.
  */
-import { test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
@@ -138,7 +138,45 @@ test('check all movements ', async ({ page }) => {
 
 
 /**
- * activate get multi-banking for assets
+ * Activate multi-banking for assets (Demo Version does not allow this!)
  */
 test('activate multi-banking', async ({ page }) => {
+    await page.goto('/ap/ga/ob/html/finance/home');
+
+  const assetsWidget = page.locator('[data-cy="balanceSheet"]');
+  await expect(assetsWidget).toBeVisible();
+  await assetsWidget.locator('[data-cy="show-details-button"]').click();
+
+  await expect(page.locator('#page-title')).toContainText('Vermögensübersicht');
+
+  const multiBankingCard = page.getByText('Multibanking', { exact: true });
+  await expect(multiBankingCard).toBeVisible();
+
+  await page.getByText('Drittbank hinzufügen', { exact: true }).click();
+  await expect(page.locator('#page-title')).toContainText('Multibanking aktivieren');
+
+  const bankSelect = page.getByTestId('selectedBank-select-multiple');
+  await expect(bankSelect).toBeVisible();
+  await bankSelect.click();
+  await page.getByText('ZKAPB', { exact: false }).click();
+
+  await page.getByRole('button', { name: 'Weiter' }).click();
+  await expect(page.getByTestId('stepIndicatorStep-label').nth(1)).toContainText('Übersicht');
+
+  await page.getByRole('button', { name: 'Weiterleitung zur Drittbank' }).click();
+
+  const requiredError = page
+    .locator('[data-testid="tncAccepted-checkbox-form-row"]')
+    .locator('[data-testid="error-messages"]')
+    .locator('[data-testid="required-error"]');
+
+  await expect(requiredError).toContainText('Dies ist ein Pflichtfeld.');
+
+  const checkboxRow = page.locator('[data-testid="tncAccepted-checkbox-form-row"]');
+  await checkboxRow.locator('input[type="checkbox"]').check();
+  await page.getByRole('button', { name: 'Weiterleitung zur Drittbank' }).click();
+
+  await expect(page.getByTestId('notification-content-translate-html')).toContainText(
+    'In der Demoversion wird diese Funktion nicht unterstützt'
+  );
 });

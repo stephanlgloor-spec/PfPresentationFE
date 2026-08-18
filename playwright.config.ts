@@ -12,6 +12,6 @@ export default defineConfig({
     browserName: 'chromium',
     actionTimeout: 10000,
     ignoreHTTPSErrors: true,
-    video: 'on',
+    video: 'off',
   }
 });
