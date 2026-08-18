@@ -17,9 +17,9 @@ class WidgetBase {
         // locate the widget title by data-cy attribute, which is unique for each widget, and filter by the provided cv (component version) string
         this.widget = page.locator(`[data-cy="${cv}"]`);
         this.titleKey = titleKey;
-        this.title = this.widget.locator('[data-testid="widget-title"]');
+        this.title =  this.widget.getByTestId('widget-title').first();
         if (helpButton) {
-            this.helpButton = this.widget.locator('[data-testid="widget-help-button"]').first();
+            this.helpButton = this.widget.getByTestId('widget-help-button').first();
         }
     }
 
@@ -145,9 +145,9 @@ export class AnalyticsWidget extends WidgetBase {
 
     constructor(page: Page) {
         super(page, "financeCoachBalance", "ANALYTICS");
-        this.settingsButton = this.widget.locator('[data-testid="widget-settings-button"]').first();
+        this.settingsButton = this.widget.getByTestId("widget-settings-button").first();
         this.chart = this.widget.locator('[data-cy="widget-content"]').first();
-        this.overviewLink = this.widget.locator('[data-testid="fa-balance-link-analysis-overview"]');
+        this.overviewLink = this.widget.getByTestId("fa-balance-link-analysis-overview");
     }
 
     /**
@@ -186,9 +186,8 @@ export class AssetsWidget extends WidgetBase {
 
     constructor(page: Page) {
         super(page, "balanceSheet", "ASSETS");
-        this.helpButton = this.widget.locator('[data-testid="widget-help-button"]').nth(1);    // why nth first ? 
         this.detailsButton = this.widget.locator('[data-cy="show-details-button"]');
-        this.rows = this.widget.locator('[data-testid="description-cell"]');
+        this.rows = this.widget.getByTestId("description-cell");
     }
 
     /**
@@ -246,7 +245,6 @@ class CreditCardWidget extends WidgetBase {
 
     constructor(page: Page, cv: string = "credit-card-widget") {
         super(page, cv, "CREDIT_CARD");
-        this.helpButton = page.locator('[data-testid="widget-help-button"]').nth(2);        // why nth second ?
         this.amount = this.widget.locator('[data-cy-fpui-amount]');
         this.currency = this.widget.locator('[data-cy-fpa-currency="CHF"]');
         this.detailsButton = this.widget.locator('[data-cy="show-details-button"]').first();
@@ -395,11 +393,10 @@ export class MovementOverviewWidget extends WidgetBase {
 
     constructor(page: Page) {
         super(page, "movements", "MOVEMENTS");
-        this.settingsButton = this.widget.locator('[data-testid="widget-settings-button"]').nth(1);
-        this.helpButton = this.widget.locator('[data-testid="widget-help-button"]').nth(3); // TODO why 3rd
-        this.balanceTable = this.widget.locator('[data-testid="lastMovements-table"]');
-        this.allMovementsLink = this.widget.locator('[data-testid="interactiveLink-AllMovements"]');
-        this.allOrdersLink = this.widget.locator('[data-testid="interactiveLink-AllOrders"]');
+        this.settingsButton = this.widget.getByTestId("widget-settings-button").nth(1); // why (1)
+        this.balanceTable = this.widget.getByTestId("lastMovements-table");
+        this.allMovementsLink = this.widget.getByTestId("interactiveLink-AllMovements");
+        this.allOrdersLink = this.widget.getByTestId("interactiveLink-AllOrders");
     }
 
     /**
@@ -468,7 +465,7 @@ export class FileUploadWidget extends WidgetBase {
 
     constructor(page: Page) {
         super(page, "epoUpload", "FILE_UPLOAD");      
-        this.uploader = this.widget.locator('[data-testid="fileUploader-content"]');
+        this.uploader = this.widget.getByTestId("fileUploader-content");
     }
 
     /**

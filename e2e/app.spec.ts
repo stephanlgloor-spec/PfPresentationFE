@@ -16,9 +16,9 @@ export const __dirname = dirname(__filename);
 /**
  * This test is designed to be language-neutral, ensuring that they work regardless of the language settings of the application.
  */
-test('Alles In Allem - Landing Page - language neutral - two different viewports', async ({ page }) => {
+  test('Alles In Allem - Landing Page - language neutral - two different viewports', async ({ page }) => {
   // FIXME  two view ports visible
-  for (const viewport of [{ width: 1960, height: 1440 }/* , { width: 402, height: 874 } */]) {    
+  for (const viewport of [{ width: 1960, height: 1440 } /*, { width: 402, height: 874 } */]) {    
     // laptop, mobile (iPhone 17)
     // change viewport
     await page.setViewportSize(viewport);

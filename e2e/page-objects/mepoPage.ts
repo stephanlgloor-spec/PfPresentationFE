@@ -1,7 +1,7 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 
 /**
- *  Merchant POrtal page object model class. This class represents the Merchant Portal page and provides methods to interact with its elements.
+ *  Merchant Portal page object model class. This class represents the Merchant Portal page and provides methods to interact with its elements.
  *  It encapsulates the locators and actions related to the Merchant Portal page, allowing for easy interaction and verification of its elements.
  */
 export default class MepoPage {
@@ -10,7 +10,7 @@ export default class MepoPage {
 
     constructor(page: Page) {    
         this.page = page;               
-        this.menuItems = page.locator('[data-testid="desktop-navbar-item"]');
+        this.menuItems = page.getByTestId('desktop-navbar-item');
 
     }
     /**

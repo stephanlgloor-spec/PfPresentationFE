@@ -11,6 +11,7 @@ export default defineConfig({
     viewport: { width: 1960, height: 1440 },
     browserName: 'chromium',
     actionTimeout: 10000,
-    ignoreHTTPSErrors: true
+    ignoreHTTPSErrors: true,
+    video: 'on',
   }
 });

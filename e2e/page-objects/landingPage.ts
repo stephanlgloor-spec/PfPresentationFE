@@ -116,7 +116,7 @@ export class NavigationBar {
 
   constructor(page: Page) {
     this.page = page;
-    this.menuItems = page.locator('[data-testid="desktop-navbar-item"]');
+    this.menuItems = page.getByTestId("desktop-navbar-item");
     this.searchButton = page.locator('[data-cy="Search"]');
     this.newsButton = page.locator('[data-cy="NewsAndNotifications"]');
     this.settingsButton = page.locator('[data-cy="SettingsAndProfile"]');
@@ -129,7 +129,7 @@ export class NavigationBar {
    * @param name the menu item to click
    */
   async clickMenuItem(name: MenuItem) {
-    this.page.locator('[data-testid="' + name.toString() + '"]').click();
+    this.page.getByTestId(name.toString()).click();
   }
 
   /**
@@ -153,8 +153,8 @@ export class PlatformswitchLinks {
 
   constructor(page: Page) {
     this.page = page;
-    this.platformEfinanceLink = page.locator('[data-testid="PlatformEfinance"]');
-    this.platformMepoLink = page.locator('[data-testid="PlatformMepo"]');
+    this.platformEfinanceLink = page.getByTestId('PlatformEfinance');
+    this.platformMepoLink = page.getByTestId('PlatformMepo');
 
   }
 
