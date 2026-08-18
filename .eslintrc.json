@@ -16,6 +16,8 @@
     "no-console": "warn",
     "max-len": ["warn", { "code": 120 }],
     "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
-    "@typescript-eslint/explicit-function-return-type": "off"
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "no-useless-concat": "error",
+    "prefer-template": "error"
   }
 }

@@ -18,8 +18,8 @@ export const __dirname = dirname(__filename);
  */
   test('Alles In Allem - Landing Page - language neutral - two different viewports', async ({ page }) => {
   // FIXME  two view ports visible
-  for (const viewport of [LAPTOP, MOBILE]) {    
-    // laptop, mobile (iPhone 17)
+  for (const viewport of [LAPTOP, MOBILE]) {
+    console.log(`test for viewport size = ${viewport.height} , ${viewport.width}`);
     // change viewport
     await page.setViewportSize(viewport);
     // navigate to the landing page
@@ -135,6 +135,7 @@ test('Check all outgoing links', async ({ page }) => {
  */
 test('check all movements ', async ({ page }) => {
   // TODO
+  // test the dropdown for movements and also check if REST API was called for endpoints 
 });
 
 
