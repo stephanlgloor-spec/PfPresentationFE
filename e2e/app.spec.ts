@@ -8,7 +8,7 @@ import { resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { LandingPage } from './page-objects/landingPage';
-import { Language } from './page-objects/types';
+import { Language, LAPTOP, MOBILE } from './page-objects/types';
 import MepoPage from './page-objects/MepoPage';
 const __filename = fileURLToPath(import.meta.url);
 export const __dirname = dirname(__filename);
@@ -18,7 +18,7 @@ export const __dirname = dirname(__filename);
  */
   test('Alles In Allem - Landing Page - language neutral - two different viewports', async ({ page }) => {
   // FIXME  two view ports visible
-  for (const viewport of [{ width: 1960, height: 1440 } /*, { width: 402, height: 874 } */]) {    
+  for (const viewport of [LAPTOP, MOBILE]) {    
     // laptop, mobile (iPhone 17)
     // change viewport
     await page.setViewportSize(viewport);
@@ -26,7 +26,7 @@ export const __dirname = dirname(__filename);
     await page.goto('/ap/ga/ob/html/finance/home');
     const landingPage = new LandingPage(page);
     // check that landing page and content is loaded properly and all content is visible
-    await landingPage.expectPageLoaded();
+    await landingPage.expectPageLoaded(viewport);
   }
 });
 
@@ -138,44 +138,52 @@ test('check all movements ', async ({ page }) => {
 
 
 /**
- * Activate multi-banking for assets (Demo Version does not allow this!)
+ * Activate multi-banking for assets (Demo Version does not allow this!).
+ * This uses getByText to find the elements and click on them. It is a more robust way to find elements than using locators.
  */
 test('activate multi-banking', async ({ page }) => {
-    await page.goto('/ap/ga/ob/html/finance/home');
+  // navigate to the page in German language
+  await page.goto('/ap/ga/ob/html/finance/home');
 
+  // select the assets widget and click on the "show details" button to navigate to the assets overview page
   const assetsWidget = page.locator('[data-cy="balanceSheet"]');
   await expect(assetsWidget).toBeVisible();
   await assetsWidget.locator('[data-cy="show-details-button"]').click();
 
+  // wait for the assets overview page to load
   await expect(page.locator('#page-title')).toContainText('Vermögensübersicht');
 
+  // select the multi-banking card and click on the "add third-party bank" button to navigate to the multi-banking activation page
   const multiBankingCard = page.getByText('Multibanking', { exact: true });
   await expect(multiBankingCard).toBeVisible();
-
   await page.getByText('Drittbank hinzufügen', { exact: true }).click();
   await expect(page.locator('#page-title')).toContainText('Multibanking aktivieren');
 
+  // Click on Dropdown and select the bank "ZKAPB" from the list. Then click on the "Weiter" button to proceed to the next step.
   const bankSelect = page.getByTestId('selectedBank-select-multiple');
   await expect(bankSelect).toBeVisible();
   await bankSelect.click();
   await page.getByText('ZKAPB', { exact: false }).click();
-
   await page.getByRole('button', { name: 'Weiter' }).click();
-  await expect(page.getByTestId('stepIndicatorStep-label').nth(1)).toContainText('Übersicht');
 
+  // Check the step indicator if second step is active and click on the "Weiterleitung zur Drittbank" button to proceed to the next step.
+  await expect(page.getByTestId('stepIndicatorStep-label').nth(1)).toContainText('Übersicht');
   await page.getByRole('button', { name: 'Weiterleitung zur Drittbank' }).click();
 
+  // Validation: As Accepting is  a required field, check if the error message is displayed and then check the checkbox to accept the T&C.
+  // Then click  again on  the "Weiterleitung zur Drittbank" button.
   const requiredError = page
     .locator('[data-testid="tncAccepted-checkbox-form-row"]')
     .locator('[data-testid="error-messages"]')
     .locator('[data-testid="required-error"]');
+  await expect(requiredError).toContainText('Dies ist ein Pflichtfeld.'); // check validation text
 
-  await expect(requiredError).toContainText('Dies ist ein Pflichtfeld.');
-
+  // Check the checkbox to accept the T&C and click on the "Weiterleitung zur Drittbank" button again.
   const checkboxRow = page.locator('[data-testid="tncAccepted-checkbox-form-row"]');
   await checkboxRow.locator('input[type="checkbox"]').check();
   await page.getByRole('button', { name: 'Weiterleitung zur Drittbank' }).click();
 
+  // Validation: Check if the notification message is displayed and contains the expected text.
   await expect(page.getByTestId('notification-content-translate-html')).toContainText(
     'In der Demoversion wird diese Funktion nicht unterstützt'
   );

@@ -1,5 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 import { PaymentWidget, EBillWidget, AnalyticsWidget, AssetsWidget, CreditCardWidget2, CreditCardWidget1, CreditCardWidgetBusiness, QuickLinksWidget, MovementOverviewWidget, FileUploadWidget, SearchWidget, EpoOverview, EditPaymentWidget, EnquiryWidget } from './homePage';
+import { Viewport } from './types';
 
 /**
  * The LandingPage class represents the landing page of the application. It provides access to various widgets and navigation elements on the page, allowing for interaction and verification of their visibility and functionality.
@@ -62,16 +63,25 @@ export class LandingPage {
    * This method uses the Playwright expect function to assert that the navigation bar and widget titles are present on the page.
    * It is an asynchronous method that returns a Promise, allowing for proper handling of the verification process.
    */
-  async expectPageLoaded() {
+  async expectPageLoaded(viewport: Viewport) {
     // first menu item is visible 
-    await this.page.locator('[data-testid="desktop-navbar-item"]').first().waitFor({ state: 'visible' });
-    // check for all menu items 
-    const count = await this.page.locator('[data-testid="desktop-navbar-item"]').count();
-    await expect(count).toBeGreaterThan(0);
-    const widgetTitles = await this.page.locator('[data-testid="widget-title"]').count();
-    expect(widgetTitles).toBeGreaterThan(0);
-    await this.platformSwitchLinks.expectPlatformLinksAvailable();
-    await this.nav.expectMenuAvailable();
+    if (viewport.width <= 768) {
+      // mobile viewport
+      await this.page.locator('[data-testid="burgerMenu-button"]').first().waitFor({ state: 'visible' });
+      const widgetTitles = await this.page.getByTestId("widget-title").count();
+      expect(widgetTitles).toBeGreaterThan(0);
+    } else {
+      // laptop viewport
+      await this.page.locator('[data-testid="desktop-navbar-item"]').first().waitFor({ state: 'visible' });
+      // check for all menu items 
+      const count = await this.page.locator('[data-testid="desktop-navbar-item"]').count();
+      await expect(count).toBeGreaterThan(0);
+      const widgetTitles = await this.page.getByTestId("widget-title").count();
+      expect(widgetTitles).toBeGreaterThan(0);
+      await this.platformSwitchLinks.expectPlatformLinksAvailable();
+      await this.nav.expectMenuAvailable();
+    }
+    // check if widgets are on the page and attached in the DOM
     await this.paymentWidget.expectAvailable();
     await this.ebillWidget.expectAvailable();
     await this.analyticsWidget.expectAvailable();

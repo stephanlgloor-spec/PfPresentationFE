@@ -141,3 +141,7 @@ export const ASSET_TABLE_LABELS: Record<string, Record<Language, string>> = {
     [Language.EN]: 'Total',
   },
 };
+
+export const LAPTOP = { width: 1960, height: 1440 };
+export const MOBILE = { width: 402, height: 874 };
+export type Viewport = { width: number; height: number };
