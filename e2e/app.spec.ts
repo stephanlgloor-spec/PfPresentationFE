@@ -1,6 +1,3 @@
-/**
- * This test suite contains end-to-end tests for the landing page of the application. It verifies that the landing page loads correctly and that all outgoing links are functional.
- */
 import { expect, test } from '@playwright/test';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
@@ -14,12 +11,16 @@ const __filename = fileURLToPath(import.meta.url);
 export const __dirname = dirname(__filename);
 
 /**
+ * This test suite contains end-to-end tests for the landing page of the application. It verifies that the landing page loads correctly and that all outgoing links are functional.
+ */
+test.describe('Landing Page Test - Suite', () => {
+/**
  * This test is designed to be language-neutral, ensuring that they work regardless of the language settings of the application.
  */
   test('Alles In Allem - Landing Page - language neutral - two different viewports', async ({ page }) => {
   // FIXME  two view ports visible
   for (const viewport of [LAPTOP, MOBILE]) {
-    console.log(`test for viewport size = ${viewport.height} , ${viewport.width}`);
+    
     // change viewport
     await page.setViewportSize(viewport);
     // navigate to the landing page
@@ -67,6 +68,9 @@ test('Check all texts in German', async ({ page }) => {
   // TODO quick links widget Edit, Search and Enquiry
 });
 
+/**
+ * Test with text in specific language for language setting French
+ */
 test('Check all texts in French', async ({ page }) => {
   // navigate to the page post finance Francais
   await page.goto('/fr');
@@ -129,16 +133,6 @@ test('Check all outgoing links', async ({ page }) => {
   // FIXME: await landingPage.nav.expectMenuVisible();  // check if the page is loaded properly by checking if the menu items are visible
 });
 
-
-/**
- * Check all possible movements and if correct displays the last movements
- */
-test('check all movements ', async ({ page }) => {
-  // TODO
-  // test the dropdown for movements and also check if REST API was called for endpoints 
-});
-
-
 /**
  * Activate multi-banking for assets (Demo Version does not allow this!).
  * This uses getByText to find the elements and click on them. It is a more robust way to find elements than using locators.
@@ -189,4 +183,5 @@ test('activate multi-banking', async ({ page }) => {
   await expect(page.getByTestId('notification-content-translate-html')).toContainText(
     'In der Demoversion wird diese Funktion nicht unterstützt'
   );
+});
 });
